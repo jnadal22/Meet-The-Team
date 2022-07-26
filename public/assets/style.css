@@ -1,0 +1,16 @@
+.container {
+display: flex;
+flex-direction: row;
+}
+
+.display-4{
+    text-align: center;
+    font-size: 150px;
+    font-stretch: expanded;
+    
+ 
+}
+
+.jumbotron{
+    background-color: red;
+}
