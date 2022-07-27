@@ -108,14 +108,47 @@ function callIntern() {
     });
 }
 
+function callEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: `input`,
+        message: `what is the employees name?`,
+        name: "Name",
+      },
+      {
+        type: `input`,
+        message: `what is the employees ID#?`,
+        name: `Id`,
+      },
+      {
+        type: `input`,
+        message: `what is the employees Email?`,
+        name: `Email`,
+      },
+      {
+        Type: `input`,
+        message: `what is the employees officenumber?`,
+        name: `officeNum`,
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      answers.title = "Employee";
+      saveData.push(answers);
+
+      AnyOthers();
+    });
+  }
+
 function AnyOthers() {
   inquirer
     .prompt([
       {
         type: `list`,
-        message: `would you like to add more employees?`,
+        message: `would you like to add more to your team?`,
         name: `employeesQuestion`,
-        choices: ["Manager", "Engineer", "Intern", "noone"],
+        choices: ["Manager", "Engineer", "Intern", "Employee", "noone"],
       },
     ])
     .then((answers) => {
@@ -129,12 +162,17 @@ function AnyOthers() {
       if (answers.employeesQuestion === "Intern") {
         callIntern();
       }
+      if (answers.employeesQuestion === "Employee") {
+        callEmployee();
+      }
       if (answers.employeesQuestion === "noone") {
         console.log(saveData);
         writeHtml(saveData);
       }
     });
 }
+
+
 
 callManager();
 
@@ -143,17 +181,17 @@ function writeHtml(information) {
   let team = "";
   information.forEach((item) => {
     team += `<div class="card" style="width: 18rem">
-    <div class="list-group list-group-flush">
-      <h1 class="name">${item.Name}</h1>
-      <h2 class="title">${item.title}</h2>
-      <a class="id1">ID:${item.Id}</a>
-      <href>Email:${item.Email}</href>
-      ${item.GitHub ? `<href>GitHub:${item.Github}</href>` : ""}
-      ${item.school ? `<li>school:${item.school}</li>` : ""}
-      ${item.officeNum ? `<li>office#:${item.officeNum}</li>` : ""}
-      
-    
-    </div>`;
+        <div class="list-group list-group-flush">
+          
+           <h1 class="name">${item.Name}</h1><br />
+           <h2 class="title">${item.title}</h2><br />
+           <a class="id1">ID:${item.Id}</a><br />
+           <href>Email:${item.Email}</href><br />
+           ${item.GitHub ? `<href>GitHub:${item.Github}</href>` : ""}
+           ${item.school ? `<li>school:${item.school}</li>` : ""}
+           ${item.officeNum ? `<li>office#:${item.officeNum}</li>` : ""}
+        </div>
+        </div>`;
   });
 
   let html = `<!DOCTYPE html>
@@ -178,7 +216,9 @@ function writeHtml(information) {
           <h1 class="display-4">Meet The Team</h1>
         </div>
       </div>
+      <div class="team-container">
       ${team}
+      </div>
     </body>
   
     <script src="index.js"></script>`;
